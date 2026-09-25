@@ -1,4 +1,4 @@
-name: PR01 CI
+name: ROS Practices CI
 
 on: [push, pull_request]
 
@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate environment JSON
+      - name: Validate PR01 environment JSON
         shell: bash
         run: python3 -m json.tool evidence/pr01/environment.json > /dev/null
 
@@ -30,6 +30,19 @@ jobs:
           mkdir -p .course-kit
           tar -xzf course-kit.tar.gz -C .course-kit
 
-      - name: Check PR evidence
+      - name: Build PR02 package
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --symlink-install --packages-select turtle_bringup
+          source install/setup.bash
+          python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
+          test -f "$(ros2 pkg prefix turtle_bringup)/share/turtle_bringup/launch/sim.launch.py"
+
+      - name: Check PR01
         shell: bash
         run: python3 .course-kit/v1/tools/check_practice.py PR01 --submission .
+
+      - name: Check PR02
+        shell: bash
+        run: python3 .course-kit/v1/tools/check_practice.py PR02 --submission .
