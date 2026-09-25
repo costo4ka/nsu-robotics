@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR02",
+  "commit": "97e9d92a862d5226ebaa4575c510b019d7206d83",
+  "course_kit": {
+    "version": "v1-w02",
+    "archive_sha256": "5d210c431e32418f45e2cffa9dd2028116c7a9520a36f3c7079c778cd73437a8"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select turtle_bringup",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist",
+    "ros2 topic info /cmd_vel --verbose",
+    "ros2 topic info /turtle1/cmd_vel --verbose"
+  ],
+  "tests": [
+    {
+      "name": "empty package build",
+      "status": "passed"
+    },
+    {
+      "name": "final turtle_bringup build",
+      "status": "passed"
+    },
+    {
+      "name": "installed launch file detected",
+      "status": "passed"
+    },
+    {
+      "name": "turtlesim launched through turtle_bringup",
+      "status": "passed"
+    },
+    {
+      "name": "correct cmd_vel changed turtle pose",
+      "status": "passed"
+    },
+    {
+      "name": "wrong /cmd_vel had publisher and zero subscribers",
+      "status": "passed"
+    },
+    {
+      "name": "fixed /turtle1/cmd_vel had publisher and turtlesim subscriber",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "Published geometry_msgs/msg/Twist to /cmd_vel with --rate 1; ros2 topic info /cmd_vel --verbose showed Publisher count: 1 and Subscription count: 0, and the turtle did not move.",
+    "root_cause": "The message type was correct, but turtlesim subscribes to /turtle1/cmd_vel, not /cmd_vel. Topic discovery alone does not imply delivery to the intended subscriber.",
+    "proof_after": "Changed only the topic name to /turtle1/cmd_vel. ros2 topic info showed Publisher count: 1 and Subscription count: 1 for turtlesim, and the turtle moved."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}
