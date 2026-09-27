@@ -1,0 +1,37 @@
+$ timeout -s INT 20s ros2 topic hz /turtle1/cmd_vel
+average rate: 9.992
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 11
+average rate: 9.996
+	min: 0.099s max: 0.101s std dev: 0.00047s window: 22
+average rate: 9.996
+	min: 0.099s max: 0.101s std dev: 0.00047s window: 33
+average rate: 9.997
+	min: 0.099s max: 0.101s std dev: 0.00048s window: 43
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00046s window: 54
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00048s window: 65
+average rate: 9.998
+	min: 0.099s max: 0.101s std dev: 0.00047s window: 75
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00048s window: 86
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 97
+average rate: 10.000
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 108
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 118
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 128
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00053s window: 139
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 150
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 160
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00052s window: 171
+average rate: 9.999
+	min: 0.099s max: 0.101s std dev: 0.00053s window: 181
+[exit=124, 20:08:46.892]
+

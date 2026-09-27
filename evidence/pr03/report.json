@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR03",
+  "commit": "c89fe78e4c56b38f5ed98cbe242d9ac1365f0137",
+  "course_kit": {
+    "version": "v1-w03",
+    "archive_sha256": "7fbfd3e8161ab6c6ebefc7663efdaf77d9a7d490399743507f33dcefbd5ac522"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select patrol",
+    "python3 -m pytest -v src/patrol/test",
+    "colcon test --packages-select patrol",
+    "colcon test-result --verbose --test-result-base build/patrol",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 run patrol patrol",
+    "ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel",
+    "ros2 node list",
+    "ros2 node info /patrol",
+    "ros2 topic info /cmd_vel --verbose",
+    "ros2 topic info /turtle1/cmd_vel --verbose",
+    "timeout 5s ros2 topic echo /cmd_vel geometry_msgs/msg/Twist --once",
+    "timeout 5s ros2 topic echo /turtle1/cmd_vel geometry_msgs/msg/Twist --once",
+    "timeout 5s ros2 topic echo /turtle1/pose turtlesim/msg/Pose --once",
+    "timeout -s INT 20s ros2 topic hz /turtle1/cmd_vel",
+    "bash evidence/pr03/scripts/experiment.sh",
+    "python3 evidence/pr03/scripts/stop_probe.py <patrol PGID>",
+    "python3 .course-kit/v1/tools/check_practice.py PR03 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "patrol package build",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: missing pose gives zero Twist",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: regular pose gives linear.x=0.5, angular.z=0.3",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: command limits, integer inputs and non-finite values",
+      "status": "passed"
+    },
+    {
+      "name": "node: relative cmd_vel resolves to /cmd_vel, remap gives /turtle1/cmd_vel, timer period 0.1 s",
+      "status": "passed"
+    },
+    {
+      "name": "node: zero command until first pose, then 0.5/0.3",
+      "status": "passed"
+    },
+    {
+      "name": "ament_flake8 and ament_pep257",
+      "status": "passed"
+    },
+    {
+      "name": "zero command on /cmd_vel before turtlesim publishes a pose",
+      "status": "passed"
+    },
+    {
+      "name": "without remap: /cmd_vel has patrol publisher and no subscribers, turtle does not move",
+      "status": "passed"
+    },
+    {
+      "name": "with remap: /turtle1/cmd_vel has patrol publisher and turtlesim subscriber, turtle moves",
+      "status": "passed"
+    },
+    {
+      "name": "command rate on /turtle1/cmd_vel is about 10 Hz over a window longer than 10 s (logs/3-hz.txt)",
+      "status": "passed"
+    },
+    {
+      "name": "after Ctrl+C the turtle keeps moving for less than 1 s until the turtlesim command timeout, then stops (logs/4-stop.txt)",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "ros2 run patrol patrol without remap: ros2 node info /patrol showed the publisher on /cmd_vel; ros2 topic info /cmd_vel --verbose showed Publisher count: 1 (patrol) and Subscription count: 0; ros2 topic info /turtle1/cmd_vel --verbose showed Publisher count: 0 and Subscription count: 1 (turtlesim); /turtle1/pose stayed at the spawn point x=y=5.5444, theta=0 while /cmd_vel carried linear.x=0.5, angular.z=0.3.",
+    "root_cause": "The node publishes to the relative name cmd_vel. In the root namespace it resolves to /cmd_vel, while turtlesim subscribes to /turtle1/cmd_vel. Discovery sees both endpoints, but they belong to different topics, so the command is never delivered even though the message type is the same.",
+    "proof_after": "Only the launch command changed: ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel. ros2 topic info /turtle1/cmd_vel --verbose showed Publisher count: 1 (patrol) and Subscription count: 1 (turtlesim), /cmd_vel disappeared, the pose changed between two reads with linear_velocity=0.5, and ros2 topic hz /turtle1/cmd_vel measured about 10 Hz over a window longer than 10 s (logs/2-fixed.txt, logs/3-hz.txt)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

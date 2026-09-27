@@ -1,0 +1,21 @@
+$ python3 evidence/pr03/scripts/stop_probe.py 10781
+SIGINT отправлен группе 10781
+до SIGINT: x=3.8744 y=7.1651 theta=-1.5456 linear_velocity=0.50
+последнее изменение позы через 0.960 с после SIGINT
+через 3.0 с: x=3.9561 y=6.6938 theta=-1.2576 linear_velocity=0.00
+поз получено после SIGINT: 188
+[exit=0, 20:08:52.884]
+
+$ ros2 node list
+/turtlesim
+[exit=0, 20:08:59.391]
+
+$ timeout 5s ros2 topic echo /turtle1/pose turtlesim/msg/Pose --once
+x: 3.956105947494507
+y: 6.693755149841309
+theta: -1.2575706243515015
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+[exit=0, 20:09:01.183]
+

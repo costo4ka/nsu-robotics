@@ -1,0 +1,16 @@
+$ ros2 node list
+/patrol
+[exit=0, 20:07:52.502]
+
+$ timeout 5s ros2 topic echo /cmd_vel geometry_msgs/msg/Twist --once
+linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+---
+[exit=0, 20:07:54.377]
+

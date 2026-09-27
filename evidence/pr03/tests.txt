@@ -1,0 +1,61 @@
+$ colcon build --symlink-install --packages-select patrol
+Starting >>> patrol
+Finished <<< patrol [1.72s]
+
+Summary: 1 package finished [1.88s]
+[exit=0]
+
+$ python3 -m pytest -v src/patrol/test
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/arina/robotics/src/patrol
+plugins: ament-flake8-0.17.5, ament-pep257-0.17.5, ament-xmllint-0.17.5, ament-lint-0.17.5, launch-testing-3.4.11, launch-testing-ros-0.26.12, ament-copyright-0.17.5, colcon-core-0.21.2, cov-4.1.0
+collecting ... collected 17 items
+
+src/patrol/test/test_command.py::test_missing_pose_gives_zero_command PASSED [  5%]
+src/patrol/test/test_command.py::test_regular_pose_gives_patrol_command PASSED [ 11%]
+src/patrol/test/test_command.py::test_command_does_not_depend_on_pose_values PASSED [ 17%]
+src/patrol/test/test_command.py::test_choose_command_keeps_pose_and_returns_new_message PASSED [ 23%]
+src/patrol/test/test_command.py::test_limit_command[0.5-0.3-0.5-0.3] PASSED [ 29%]
+src/patrol/test/test_command.py::test_limit_command[5.0-2.0-1.0-1.0] PASSED [ 35%]
+src/patrol/test/test_command.py::test_limit_command[-5.0--2.0--1.0--1.0] PASSED [ 41%]
+src/patrol/test/test_command.py::test_limit_command[nan-inf-0.0-0.0] PASSED [ 47%]
+src/patrol/test/test_command.py::test_limit_command[1-0-1.0-0.0] PASSED  [ 52%]
+src/patrol/test/test_command.py::test_limit_command_custom_limits PASSED [ 58%]
+src/patrol/test/test_command.py::test_limit_command_integer_limits PASSED [ 64%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [ 70%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 76%]
+src/patrol/test/test_patrol_node.py::test_graph_names_and_timer_period PASSED [ 82%]
+src/patrol/test/test_patrol_node.py::test_remap_resolves_cmd_vel_to_turtle_topic PASSED [ 88%]
+src/patrol/test/test_patrol_node.py::test_zero_command_until_first_pose_then_patrol_command PASSED [ 94%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [100%]
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 12 warnings
+  Warning: This process (pid=10406) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 16 passed, 1 skipped, 12 warnings in 1.08s ==================
+[exit=0]
+
+$ colcon test --packages-select patrol
+Starting >>> patrol
+--- stderr: patrol
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 12 warnings
+  Warning: This process (pid=10470) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---
+Finished <<< patrol [1.96s]
+
+Summary: 1 package finished [2.12s]
+  1 package had stderr output: patrol
+[exit=0]
+
+$ colcon test-result --verbose --test-result-base build/patrol
+Summary: 17 tests, 0 errors, 0 failures, 1 skipped
+[exit=0]
+
