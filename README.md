@@ -71,3 +71,31 @@ Expected result:
 Для управления использовался топик `/turtle1/cmd_vel` типа `geometry_msgs/msg/Twist`.
 При публикации того же сообщения в `/cmd_vel` publisher существовал, но подписчиков не было.
 После исправления имени на `/turtle1/cmd_vel` движение восстановилось.
+
+## PR03 — patrol
+
+Пакет `patrol` с нодой `/patrol`:
+- подписка на `/turtle1/pose` только сохраняет последнюю позу;
+- таймер с периодом 0.1 с публикует `geometry_msgs/msg/Twist` в относительный топик `cmd_vel`;
+- до первой позы команда нулевая, после — `linear.x = 0.5`, `angular.z = 0.3`;
+- выбор команды вынесен в чистую функцию `patrol.command.choose_command`, скорости ограничиваются `limit_command`.
+
+Сборка и тесты:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+colcon build --symlink-install --packages-select patrol
+source install/setup.bash
+python3 -m pytest src/patrol/test
+```
+
+Запуск в новом терминале из корня репозитория (turtlesim уже запущен через `ros2 launch turtle_bringup sim.launch.py`):
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=16
+ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
+```
+
+Без remap относительное имя `cmd_vel` разрешается в `/cmd_vel`: у него есть издатель `/patrol`, но нет подписчика turtlesim, и черепаха стоит.

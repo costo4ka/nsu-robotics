@@ -1,8 +1,6 @@
-from glob import glob
-
 from setuptools import find_packages, setup
 
-package_name = 'turtle_bringup'
+package_name = 'patrol'
 
 setup(
     name=package_name,
@@ -12,13 +10,12 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='arina',
     maintainer_email='a.tebaikina@g.nsu.ru',
-    description='Launch package for turtlesim',
+    description='Patrol node: stores the latest turtle pose and publishes Twist commands',
     license='Apache-2.0',
     extras_require={
         'test': [
@@ -27,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'patrol = patrol.patrol:main'
         ],
     },
 )

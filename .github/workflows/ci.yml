@@ -10,8 +10,8 @@ jobs:
       image: osrf/ros:jazzy-desktop-full@sha256:d16957210572c5f919f3f9bd2fb0cc24a82542647489d8b8eda7c3beda31305f
 
     env:
-      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w02-5d210c431e32.tar.gz
-      COURSE_KIT_SHA256: 5d210c431e32418f45e2cffa9dd2028116c7a9520a36f3c7079c778cd73437a8
+      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz
+      COURSE_KIT_SHA256: 7fbfd3e8161ab6c6ebefc7663efdaf77d9a7d490399743507f33dcefbd5ac522
 
     steps:
       - uses: actions/checkout@v4
@@ -25,24 +25,32 @@ jobs:
       - name: Download course kit
         shell: bash
         run: |
-          curl -fsSLo course-kit.tar.gz "$COURSE_KIT_URL"
-          printf '%s  %s\n' "$COURSE_KIT_SHA256" course-kit.tar.gz | sha256sum -c -
+          curl -fsSLo /tmp/course-kit.tar.gz "$COURSE_KIT_URL"
+          printf '%s  %s\n' "$COURSE_KIT_SHA256" /tmp/course-kit.tar.gz | sha256sum -c -
           mkdir -p .course-kit
-          tar -xzf course-kit.tar.gz -C .course-kit
+          tar -xzf /tmp/course-kit.tar.gz -C .course-kit
 
-      - name: Build PR02 package
+      - name: Build and test ROS packages
         shell: bash
         run: |
           source /opt/ros/jazzy/setup.bash
-          colcon build --symlink-install --packages-select turtle_bringup
+          colcon build --symlink-install
+          colcon test --event-handlers console_direct+
+          colcon test-result --verbose
+
+      - name: Check PR02 launch install
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
           source install/setup.bash
           python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
           test -f "$(ros2 pkg prefix turtle_bringup)/share/turtle_bringup/launch/sim.launch.py"
 
-      - name: Check PR01
+      - name: Check PR03
         shell: bash
-        run: python3 .course-kit/v1/tools/check_practice.py PR01 --submission .
-
-      - name: Check PR02
-        shell: bash
-        run: python3 .course-kit/v1/tools/check_practice.py PR02 --submission .
+        run: |
+          # Без safe.directory git в контейнере отказывается работать,
+          # и checker молча пропускает проверку report.commit.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse --is-inside-work-tree)" = true
+          python3 .course-kit/v1/tools/check_practice.py PR03 --submission .
