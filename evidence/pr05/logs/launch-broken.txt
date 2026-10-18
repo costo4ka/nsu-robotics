@@ -1,0 +1,29 @@
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: PR05 bringup: namespace=robot_a subscriber_reliability=reliable record=false bag_dir=evidence/pr05/bag
+[INFO] [turtlesim_node-1]: process started with pid [431727]
+[INFO] [patrol-2]: process started with pid [431728]
+[INFO] [pose_relay-3]: process started with pid [431729]
+[INFO] [pose_listener-4]: process started with pid [431730]
+[turtlesim_node-1] [INFO] [1792339018.299189315] [turtlesim]: Starting turtlesim with node name /turtlesim
+[turtlesim_node-1] [INFO] [1792339018.303526772] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+[pose_listener-4] [INFO] [1792339018.507830981] [robot_a.pose_listener]: subscribed to /robot_a/sensor_pose with reliability=reliable
+[pose_listener-4] [WARN] [1792339018.588181768] [robot_a.pose_listener]: incompatible QoS with a publisher of /robot_a/sensor_pose: last policy RELIABILITY, total 1
+[pose_relay-3] [WARN] [1792339018.601575209] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+[pose_listener-4] [INFO] [1792339020.495828026] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[pose_listener-4] [INFO] [1792339022.495861549] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[pose_listener-4] [INFO] [1792339024.495833754] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[pose_listener-4] [INFO] [1792339026.495845421] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[pose_relay-3] [WARN] [1792339028.066948634] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+[pose_listener-4] [INFO] [1792339028.495802433] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[pose_listener-4] [INFO] [1792339030.495871104] [robot_a.pose_listener]: reliability=reliable: received 0 messages
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [pose_listener-4]: sending signal 'SIGINT' to process[pose_listener-4]
+[INFO] [pose_relay-3]: sending signal 'SIGINT' to process[pose_relay-3]
+[INFO] [patrol-2]: sending signal 'SIGINT' to process[patrol-2]
+[INFO] [turtlesim_node-1]: sending signal 'SIGINT' to process[turtlesim_node-1]
+[turtlesim_node-1] [INFO] [1792339032.434239870] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[turtlesim_node-1] [INFO] [1792339032.437614743] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [turtlesim_node-1]: process has finished cleanly [pid 431727]
+[INFO] [patrol-2]: process has finished cleanly [pid 431728]
+[INFO] [pose_listener-4]: process has finished cleanly [pid 431730]
+[INFO] [pose_relay-3]: process has finished cleanly [pid 431729]

@@ -1,0 +1,26 @@
+$ terminal_output play_reliable
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792339074.558390662] [rosbag2_player]: Set rate to 1
+[INFO] [1792339074.558502975] [rosbag2_player]: Overriding QoS profile for topic /robot_a/sensor_pose
+[INFO] [1792339074.563131835] [rosbag2_player]: Adding keyboard callbacks.
+[INFO] [1792339074.563146262] [rosbag2_player]: Press SPACE for Pause/Resume
+[INFO] [1792339074.563151432] [rosbag2_player]: Press CURSOR_RIGHT for Play Next Message
+[INFO] [1792339074.563155259] [rosbag2_player]: Press CURSOR_UP for Increase Rate 10%
+[INFO] [1792339074.563158656] [rosbag2_player]: Press CURSOR_DOWN for Decrease Rate 10%
+[INFO] [1792339074.564326859] [rosbag2_player]: Playback until timestamp: -1
+[WARN] [1792339074.761167754] [rosbag2_player]: New subscription discovered on topic '/robot_a/sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
+[WARN] [1792339081.161356716] [rosbag2_player]: New subscription discovered on topic '/robot_a/sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
+[INFO] [1792339086.773247196] [rosbag2_player]: Stopping playback.
+[exit=0, 22:58:06.979]
+
+$ terminal_output play_best_effort
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792339088.291391673] [rosbag2_player]: Set rate to 1
+[INFO] [1792339088.291491301] [rosbag2_player]: Overriding QoS profile for topic /robot_a/sensor_pose
+[INFO] [1792339088.295995556] [rosbag2_player]: Adding keyboard callbacks.
+[INFO] [1792339088.296009312] [rosbag2_player]: Press SPACE for Pause/Resume
+[INFO] [1792339088.296013680] [rosbag2_player]: Press CURSOR_RIGHT for Play Next Message
+[INFO] [1792339088.296017497] [rosbag2_player]: Press CURSOR_UP for Increase Rate 10%
+[INFO] [1792339088.296020904] [rosbag2_player]: Press CURSOR_DOWN for Decrease Rate 10%
+[INFO] [1792339088.297168528] [rosbag2_player]: Playback until timestamp: -1
+[INFO] [1792339098.404874522] [rosbag2_player]: Stopping playback.
+[exit=0, 22:58:18.630]
+

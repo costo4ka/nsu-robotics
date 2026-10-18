@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR05",
+  "commit": "30ee8d0d4262f4cb179c1fb38dce820f63bc9c60",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "bash evidence/pr05/scripts/kit.sh",
+    "colcon build --symlink-install",
+    "colcon test --event-handlers console_direct+",
+    "colcon test-result --verbose",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false",
+    "ros2 node list",
+    "ros2 topic list",
+    "ros2 topic info /robot_a/sensor_pose --verbose",
+    "timeout 5s ros2 topic echo /robot_a/sensor_pose turtlesim/msg/Pose --once --qos-reliability reliable",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag",
+    "timeout 5s ros2 topic echo /robot_a/sensor_pose turtlesim/msg/Pose --once --qos-reliability best_effort",
+    "ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml",
+    "ros2 run course_bringup pose_listener --ros-args -r __ns:=/robot_a -r __node:=replay_reliable -p reliability:=reliable",
+    "ros2 run course_bringup pose_listener --ros-args -r __ns:=/robot_a -r __node:=replay_best_effort -p reliability:=best_effort",
+    "ros2 bag info evidence/pr05/bag",
+    "cp evidence/pr05/bag/metadata.yaml evidence/pr05/bag-metadata.yaml",
+    "bash evidence/pr05/scripts/tests.sh",
+    "bash evidence/pr05/scripts/experiment.sh",
+    "python3 .course-kit/v1/tools/check_practice.py PR05 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "colcon build of patrol, turtle_bringup and course_bringup",
+      "status": "passed"
+    },
+    {
+      "name": "pure functions: sensor QoS is best effort keep_last 10 volatile; listener reliability from parameter; unknown value rejected",
+      "status": "passed"
+    },
+    {
+      "name": "pure functions: qos_check_compatible reports ERROR for best effort publisher and reliable subscription, no error for best effort",
+      "status": "passed"
+    },
+    {
+      "name": "launch description: arguments namespace, record, bag_dir, subscriber_reliability; turtlesim global; nodes under PushRosNamespace; cmd_vel remapped to /turtle1/cmd_vel",
+      "status": "passed"
+    },
+    {
+      "name": "launch description: recorder is ros2 bag record -s mcap of /<namespace>/sensor_pose under IfCondition(record)",
+      "status": "passed"
+    },
+    {
+      "name": "nodes: relative names resolve in the namespace; pose_relay offers BEST_EFFORT",
+      "status": "passed"
+    },
+    {
+      "name": "nodes: best effort listener receives relayed poses; reliable listener gets an incompatible QoS event and no messages",
+      "status": "passed"
+    },
+    {
+      "name": "patrol (PR04) tests and ament_flake8 / ament_pep257 of all packages",
+      "status": "passed"
+    },
+    {
+      "name": "live, subscriber_reliability:=reliable: /robot_a/sensor_pose is listed, publisher BEST_EFFORT and subscription RELIABLE, reliable echo times out, pose_listener received 0 and reports incompatible QoS",
+      "status": "passed"
+    },
+    {
+      "name": "live, subscriber_reliability:=best_effort record:=true: best effort echo gets a message, pose_listener receives the stream, the recorder writes MCAP",
+      "status": "passed"
+    },
+    {
+      "name": "replay of the same bag with the QoS override: reliable echo and listener get nothing, best effort echo and listener get messages",
+      "status": "passed"
+    },
+    {
+      "name": "ros2 bag info: one topic /robot_a/sensor_pose in MCAP; Ctrl+C stops launch, recorder and nodes with exit code 0",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false: ros2 topic list shows /robot_a/sensor_pose, ros2 topic info --verbose shows the pose_relay publisher with Reliability: BEST_EFFORT and the pose_listener subscription with Reliability: RELIABLE; timeout 5s ros2 topic echo ... --qos-reliability reliable --once prints only the incompatible QoS warning and exits with 124; pose_listener logs incompatible QoS (last policy RELIABILITY) and received 0 messages (evidence/pr05/qos-before.txt).",
+    "root_cause": "A best effort publisher does not offer the delivery guarantee a reliable subscription requests, so the endpoints match by topic name and type but the QoS check fails and DDS never connects them. The topic is visible in the graph, yet no message reaches the reliable subscriber.",
+    "proof_after": "Only the launch argument changed: subscriber_reliability:=best_effort. ros2 topic echo --qos-reliability best_effort gets a message, pose_listener receives the stream, and the stream was recorded to MCAP. The same bag replayed with config/qos-overrides.yaml (best_effort, keep_last, depth 10) again gives nothing to reliable subscribers and messages to best effort ones; ros2 bag info shows one topic /robot_a/sensor_pose (evidence/pr05/qos-after.txt, bag-metadata.yaml)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true,
+    "replay_verified": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

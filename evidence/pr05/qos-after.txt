@@ -1,0 +1,188 @@
+## live: ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag
+
+$ ros2 node list
+/robot_a/patrol
+/robot_a/pose_listener
+/robot_a/pose_relay
+/rosbag2_recorder
+/turtlesim
+[exit=0, 22:57:19.288, попытка 1]
+
+$ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim/msg/Pose
+
+Publisher count: 1
+
+Node name: pose_relay
+Node namespace: /robot_a
+Topic type: turtlesim/msg/Pose
+Topic type hash: RIHS01_739beba26bcba6920404ba722b7b8321348512f92ea5be235c47251940dd8aa9
+Endpoint type: PUBLISHER
+GID: 01.0f.1d.9c.6a.98.af.09.00.00.00.00.00.00.13.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 2
+
+Node name: pose_listener
+Node namespace: /robot_a
+Topic type: turtlesim/msg/Pose
+Topic type hash: RIHS01_739beba26bcba6920404ba722b7b8321348512f92ea5be235c47251940dd8aa9
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.1d.9c.6b.98.0f.bf.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Node name: rosbag2_recorder
+Node namespace: /
+Topic type: turtlesim/msg/Pose
+Topic type hash: RIHS01_739beba26bcba6920404ba722b7b8321348512f92ea5be235c47251940dd8aa9
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.1d.9c.6c.98.fd.c0.00.00.00.00.00.00.26.04
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+[exit=0, 22:57:19.651, попытка 1]
+
+$ timeout 5s ros2 topic echo /robot_a/sensor_pose turtlesim/msg/Pose --once --qos-reliability best_effort
+x: 6.0975022315979
+y: 8.781926155090332
+theta: 2.7983999252319336
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
+[exit=0, 22:57:23.028]
+
+$ terminal_output fixed subscribed|incompatible|received|first message
+[pose_listener-4] [INFO] [1792339033.246046218] [robot_a.pose_listener]: subscribed to /robot_a/sensor_pose with reliability=best_effort
+[pose_listener-4] [INFO] [1792339033.417495769] [robot_a.pose_listener]: first message: x=5.544 y=5.544
+[recorder-5] [INFO] [1792339033.577239806] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[pose_listener-4] [INFO] [1792339035.234186796] [robot_a.pose_listener]: reliability=best_effort: received 114 messages
+[pose_listener-4] [INFO] [1792339037.234191217] [robot_a.pose_listener]: reliability=best_effort: received 239 messages
+[pose_listener-4] [INFO] [1792339039.234171279] [robot_a.pose_listener]: reliability=best_effort: received 364 messages
+[pose_listener-4] [INFO] [1792339041.234241019] [robot_a.pose_listener]: reliability=best_effort: received 489 messages
+[pose_listener-4] [INFO] [1792339043.234411616] [robot_a.pose_listener]: reliability=best_effort: received 614 messages
+[pose_listener-4] [INFO] [1792339045.234281881] [robot_a.pose_listener]: reliability=best_effort: received 739 messages
+[pose_listener-4] [INFO] [1792339047.234195404] [robot_a.pose_listener]: reliability=best_effort: received 864 messages
+[pose_listener-4] [INFO] [1792339049.234180640] [robot_a.pose_listener]: reliability=best_effort: received 989 messages
+[pose_listener-4] [INFO] [1792339051.234181361] [robot_a.pose_listener]: reliability=best_effort: received 1114 messages
+[pose_listener-4] [INFO] [1792339053.234211013] [robot_a.pose_listener]: reliability=best_effort: received 1239 messages
+[pose_listener-4] [INFO] [1792339055.234362061] [robot_a.pose_listener]: reliability=best_effort: received 1364 messages
+[pose_listener-4] [INFO] [1792339057.234182097] [robot_a.pose_listener]: reliability=best_effort: received 1489 messages
+[pose_listener-4] [INFO] [1792339059.234219230] [robot_a.pose_listener]: reliability=best_effort: received 1614 messages
+[pose_listener-4] [INFO] [1792339061.234201245] [robot_a.pose_listener]: reliability=best_effort: received 1739 messages
+[pose_listener-4] [INFO] [1792339063.234188767] [robot_a.pose_listener]: reliability=best_effort: received 1864 messages
+[pose_listener-4] [INFO] [1792339065.234155866] [robot_a.pose_listener]: reliability=best_effort: received 1989 messages
+[pose_listener-4] [INFO] [1792339067.234205276] [robot_a.pose_listener]: reliability=best_effort: received 2114 messages
+[pose_listener-4] [INFO] [1792339069.234198506] [robot_a.pose_listener]: reliability=best_effort: received 2239 messages
+[pose_listener-4] [INFO] [1792339071.234182743] [robot_a.pose_listener]: reliability=best_effort: received 2364 messages
+[exit=0, 22:57:53.033]
+
+$ terminal_output fixed process has|Recording stopped
+[recorder-5] [INFO] [1792339073.036619854] [rosbag2_recorder]: Recording stopped
+[INFO] [turtlesim_node-1]: process has finished cleanly [pid 432232]
+[INFO] [pose_listener-4]: process has finished cleanly [pid 432235]
+[INFO] [pose_relay-3]: process has finished cleanly [pid 432234]
+[INFO] [recorder-5]: process has finished cleanly [pid 432236]
+[INFO] [patrol-2]: process has finished cleanly [pid 432233]
+[exit=0, 22:57:53.245]
+
+## replay: ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml (читатель best_effort)
+
+$ cat config/qos-overrides.yaml
+/robot_a/sensor_pose:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+[exit=0, 22:58:11.804]
+
+$ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim/msg/Pose
+
+Publisher count: 1
+
+Node name: rosbag2_player
+Node namespace: /
+Topic type: turtlesim/msg/Pose
+Topic type hash: RIHS01_739beba26bcba6920404ba722b7b8321348512f92ea5be235c47251940dd8aa9
+Endpoint type: PUBLISHER
+GID: 01.0f.1d.9c.7e.9d.85.e8.00.00.00.00.00.00.14.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: replay_best_effort
+Node namespace: /robot_a
+Topic type: turtlesim/msg/Pose
+Topic type hash: RIHS01_739beba26bcba6920404ba722b7b8321348512f92ea5be235c47251940dd8aa9
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.1d.9c.91.9d.56.b5.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+[exit=0, 22:58:12.158, попытка 1]
+
+$ timeout 5s ros2 topic echo /robot_a/sensor_pose turtlesim/msg/Pose --once --qos-reliability best_effort
+x: 7.066308498382568
+y: 7.8815717697143555
+theta: 1.9823999404907227
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
+[exit=0, 22:58:15.107]
+
+$ terminal_output replay_best_effort subscribed|incompatible|received|first message
+[INFO] [1792339088.415639519] [robot_a.replay_best_effort]: subscribed to /robot_a/sensor_pose with reliability=best_effort
+[INFO] [1792339088.574715937] [robot_a.replay_best_effort]: first message: x=5.648 y=5.548
+[INFO] [1792339090.403671578] [robot_a.replay_best_effort]: reliability=best_effort: received 115 messages
+[INFO] [1792339092.403630701] [robot_a.replay_best_effort]: reliability=best_effort: received 240 messages
+[INFO] [1792339094.403658477] [robot_a.replay_best_effort]: reliability=best_effort: received 365 messages
+[INFO] [1792339096.403671460] [robot_a.replay_best_effort]: reliability=best_effort: received 490 messages
+[exit=0, 22:58:18.319]
+
+## запись: ros2 bag info
+
+$ ros2 bag info evidence/pr05/bag
+
+Files:             bag_0.mcap
+Bag size:          175.6 KiB
+Storage id:        mcap
+ROS Distro:        jazzy
+Duration:          39.439148881s
+Start:             Oct 18 2026 22:57:13.592774795 (1792339033.592774795)
+End:               Oct 18 2026 22:57:53.031923676 (1792339073.031923676)
+Messages:          2466
+Topic information: Topic: /robot_a/sensor_pose | Type: turtlesim/msg/Pose | Count: 2466 | Serialization Format: cdr
+Service:           0
+Service information: 
+[exit=0, 22:58:18.864]
+

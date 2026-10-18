@@ -1,0 +1,62 @@
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: PR05 bringup: namespace=robot_a subscriber_reliability=best_effort record=true bag_dir=evidence/pr05/bag
+[INFO] [turtlesim_node-1]: process started with pid [432232]
+[INFO] [patrol-2]: process started with pid [432233]
+[INFO] [pose_relay-3]: process started with pid [432234]
+[INFO] [pose_listener-4]: process started with pid [432235]
+[INFO] [recorder-5]: process started with pid [432236]
+[turtlesim_node-1] [INFO] [1792339033.020030969] [turtlesim]: Starting turtlesim with node name /turtlesim
+[turtlesim_node-1] [INFO] [1792339033.024117851] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+[pose_listener-4] [INFO] [1792339033.246046218] [robot_a.pose_listener]: subscribed to /robot_a/sensor_pose with reliability=best_effort
+[recorder-5] stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792339033.324295693] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[recorder-5] [INFO] [1792339033.324304610] [rosbag2_recorder]: Event publisher thread: Started
+[recorder-5] [INFO] [1792339033.328078118] [rosbag2_recorder]: Starting recording to 'evidence/pr05/bag'
+[recorder-5] [INFO] [1792339033.329414430] [rosbag2_recorder]: Listening for topics...
+[recorder-5] [INFO] [1792339033.329427344] [rosbag2_recorder]: Recording...
+[recorder-5] [INFO] [1792339033.329475565] [rosbag2_recorder]: Topics discovery started.
+[pose_listener-4] [INFO] [1792339033.417495769] [robot_a.pose_listener]: first message: x=5.544 y=5.544
+[recorder-5] [INFO] [1792339033.577200621] [rosbag2_recorder]: Subscribed to topic '/robot_a/sensor_pose'
+[recorder-5] [INFO] [1792339033.577239806] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[recorder-5] [INFO] [1792339033.577244985] [rosbag2_recorder]: Topics discovery stopped.
+[pose_listener-4] [INFO] [1792339035.234186796] [robot_a.pose_listener]: reliability=best_effort: received 114 messages
+[pose_listener-4] [INFO] [1792339037.234191217] [robot_a.pose_listener]: reliability=best_effort: received 239 messages
+[pose_listener-4] [INFO] [1792339039.234171279] [robot_a.pose_listener]: reliability=best_effort: received 364 messages
+[pose_listener-4] [INFO] [1792339041.234241019] [robot_a.pose_listener]: reliability=best_effort: received 489 messages
+[pose_listener-4] [INFO] [1792339043.234411616] [robot_a.pose_listener]: reliability=best_effort: received 614 messages
+[pose_listener-4] [INFO] [1792339045.234281881] [robot_a.pose_listener]: reliability=best_effort: received 739 messages
+[pose_listener-4] [INFO] [1792339047.234195404] [robot_a.pose_listener]: reliability=best_effort: received 864 messages
+[pose_listener-4] [INFO] [1792339049.234180640] [robot_a.pose_listener]: reliability=best_effort: received 989 messages
+[pose_listener-4] [INFO] [1792339051.234181361] [robot_a.pose_listener]: reliability=best_effort: received 1114 messages
+[pose_listener-4] [INFO] [1792339053.234211013] [robot_a.pose_listener]: reliability=best_effort: received 1239 messages
+[pose_listener-4] [INFO] [1792339055.234362061] [robot_a.pose_listener]: reliability=best_effort: received 1364 messages
+[pose_listener-4] [INFO] [1792339057.234182097] [robot_a.pose_listener]: reliability=best_effort: received 1489 messages
+[pose_listener-4] [INFO] [1792339059.234219230] [robot_a.pose_listener]: reliability=best_effort: received 1614 messages
+[pose_listener-4] [INFO] [1792339061.234201245] [robot_a.pose_listener]: reliability=best_effort: received 1739 messages
+[pose_listener-4] [INFO] [1792339063.234188767] [robot_a.pose_listener]: reliability=best_effort: received 1864 messages
+[pose_listener-4] [INFO] [1792339065.234155866] [robot_a.pose_listener]: reliability=best_effort: received 1989 messages
+[pose_listener-4] [INFO] [1792339067.234205276] [robot_a.pose_listener]: reliability=best_effort: received 2114 messages
+[pose_listener-4] [INFO] [1792339069.234198506] [robot_a.pose_listener]: reliability=best_effort: received 2239 messages
+[pose_listener-4] [INFO] [1792339071.234182743] [robot_a.pose_listener]: reliability=best_effort: received 2364 messages
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [recorder-5]: sending signal 'SIGINT' to process[recorder-5]
+[INFO] [pose_listener-4]: sending signal 'SIGINT' to process[pose_listener-4]
+[INFO] [pose_relay-3]: sending signal 'SIGINT' to process[pose_relay-3]
+[INFO] [patrol-2]: sending signal 'SIGINT' to process[patrol-2]
+[INFO] [turtlesim_node-1]: sending signal 'SIGINT' to process[turtlesim_node-1]
+[recorder-5] [INFO] [1792339073.035370477] [rosbag2_recorder]: Pausing recording.
+[recorder-5] [INFO] [1792339073.035410783] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[turtlesim_node-1] [INFO] [1792339073.035391827] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[recorder-5] [INFO] [1792339073.036619854] [rosbag2_recorder]: Recording stopped
+[recorder-5] [INFO] [1792339073.037183041] [rosbag2_recorder]: Event publisher thread: Exited
+[turtlesim_node-1] [INFO] [1792339073.040287883] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[recorder-5] Exception ignored in: <module 'threading' from '/usr/lib/python3.12/threading.py'>
+[recorder-5] Traceback (most recent call last):
+[recorder-5]   File "/usr/lib/python3.12/threading.py", line 1573, in _shutdown
+[recorder-5]     def _shutdown():
+[recorder-5]     
+[recorder-5] KeyboardInterrupt: 
+[INFO] [turtlesim_node-1]: process has finished cleanly [pid 432232]
+[INFO] [pose_listener-4]: process has finished cleanly [pid 432235]
+[INFO] [pose_relay-3]: process has finished cleanly [pid 432234]
+[INFO] [recorder-5]: process has finished cleanly [pid 432236]
+[INFO] [patrol-2]: process has finished cleanly [pid 432233]

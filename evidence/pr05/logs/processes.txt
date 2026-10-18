@@ -1,0 +1,18 @@
+$ ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false   # 22:56:57.918
+SIGINT -> broken   # 22:57:12.435
+broken: завершился, код возврата 0   # 22:57:12.641
+$ ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag   # 22:57:12.645
+SIGINT -> fixed   # 22:57:53.036
+fixed: завершился, код возврата 0   # 22:57:53.243
+$ ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml   # 22:57:54.241
+$ ros2 run course_bringup pose_listener --ros-args -r __ns:=/robot_a -r __node:=replay_reliable -p reliability:=reliable   # 22:57:54.243
+SIGINT -> replay_reliable   # 22:58:06.561
+replay_reliable: завершился, код возврата 0   # 22:58:06.766
+SIGINT -> play_reliable   # 22:58:06.771
+play_reliable: завершился, код возврата 0   # 22:58:06.976
+$ ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml   # 22:58:07.981
+$ ros2 run course_bringup pose_listener --ros-args -r __ns:=/robot_a -r __node:=replay_best_effort -p reliability:=best_effort   # 22:58:07.982
+SIGINT -> replay_best_effort   # 22:58:18.110
+replay_best_effort: завершился, код возврата 0   # 22:58:18.316
+SIGINT -> play_best_effort   # 22:58:18.320
+play_best_effort: завершился, код возврата 0   # 22:58:18.628

@@ -1,0 +1,100 @@
+# branch: main, HEAD: 30ee8d0d4262f4cb179c1fb38dce820f63bc9c60
+
+$ colcon build --symlink-install
+Starting >>> patrol
+Starting >>> turtle_bringup
+Finished <<< patrol [1.73s]
+Starting >>> course_bringup
+Finished <<< turtle_bringup [1.91s]
+Finished <<< course_bringup [1.56s]
+
+Summary: 3 packages finished [3.40s]
+[exit=0]
+
+$ colcon test --event-handlers console_direct+
+Starting >>> patrol
+Starting >>> turtle_bringup
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+cachedir: /tmp/robotics/build/patrol/.pytest_cache
+rootdir: /tmp/robotics/src/patrol
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collected 55 items
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+cachedir: /tmp/robotics/build/turtle_bringup/.pytest_cache
+rootdir: /tmp/robotics/src/turtle_bringup
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collected 3 items
+
+test/test_copyright.py s                                                 [ 33%]
+test/test_command.py ...........                                         [ 20%]
+test/test_copyright.py s                                                 [ 21%]
+test/test_flake8.py .                                                    [ 66%]
+test/test_pep257.py .                                                    [100%]
+
+------ generated xml file: /tmp/robotics/build/turtle_bringup/pytest.xml -------
+========================= 2 passed, 1 skipped in 0.17s =========================
+Finished <<< turtle_bringup [0.82s]
+test/test_flake8.py .                                                    [ 23%]
+test/test_parameters.py ..........................                       [ 70%]
+test/test_patrol_node.py ...............                                 [ 98%]
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=427547) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+test/test_pep257.py .                                                    [100%]
+---------- generated xml file: /tmp/robotics/build/patrol/pytest.xml -----------
+================== 54 passed, 1 skipped, 16 warnings in 6.43s ==================
+--- stderr: patrol
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=427547) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---
+Finished <<< patrol [7.01s]
+Starting >>> course_bringup
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+cachedir: /tmp/robotics/build/course_bringup/.pytest_cache
+rootdir: /tmp/robotics/src/course_bringup
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collected 24 items
+
+test/test_copyright.py s                                                 [  4%]
+test/test_flake8.py .                                                    [  8%]
+test/test_launch_description.py .......                                  [ 37%]
+test/test_nodes.py .....                                                 [ 58%]
+test/test_pep257.py .                                                    [ 62%]
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=427943) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+test/test_qos.py .........                                               [100%]
+------ generated xml file: /tmp/robotics/build/course_bringup/pytest.xml -------
+================== 23 passed, 1 skipped, 16 warnings in 1.70s ==================
+--- stderr: course_bringup
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=427943) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---
+Finished <<< course_bringup [2.26s]
+
+Summary: 3 packages finished [9.39s]
+  2 packages had stderr output: course_bringup patrol
+[exit=0]
+
+$ colcon test-result --verbose
+Summary: 82 tests, 0 errors, 0 failures, 3 skipped
+[exit=0]
+

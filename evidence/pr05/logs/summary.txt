@@ -1,0 +1,24 @@
+# Сводка опыта ПР05
+запись: /robot_a/sensor_pose turtlesim/msg/Pose, сообщений 2466
+live best_effort pose_listener: received до 2364
+replay best_effort pose_listener: received до 490
+
+# Проверка опыта
+OK     live: reliable echo — сообщений нет, timeout (exit=124)
+OK     live: best_effort echo — сообщение получено (exit=0)
+OK     replay: reliable echo — сообщений нет, timeout (exit=124)
+OK     replay: best_effort echo — сообщение получено (exit=0)
+OK     live: у топика издатель BEST_EFFORT и подписчик RELIABLE
+OK     live: /robot_a/sensor_pose виден в ros2 topic list
+OK     live: ноды в /robot_a, turtlesim глобально
+OK     live: pose_listener reliable — incompatible QoS и received 0
+OK     replay: reliable-подписчик — incompatible QoS и received 0
+OK     replay (qos-before): издатель — rosbag2_player с BEST_EFFORT
+OK     replay (qos-after): издатель — rosbag2_player с BEST_EFFORT
+OK     replay: best_effort-подписчик получает сообщения
+OK     live: pose_listener best_effort получает сообщения
+OK     запись: ровно один поток /robot_a/sensor_pose, сообщений > 0
+OK     запись в MCAP
+OK     recorder остановился по Ctrl+C
+OK     по Ctrl+C ни один процесс launch не упал
+OK     оба launch завершились с кодом 0
