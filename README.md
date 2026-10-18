@@ -163,3 +163,30 @@ ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-override
 
 Тесты: `colcon test --packages-select course_bringup`. Опыт — `evidence/pr05/` (`qos-before.txt`,
 `qos-after.txt`, `bag-metadata.yaml`, запись `bag/`).
+
+## PR06 — модель робота и tf2
+
+Пакет `course_description`: Ackermann-робот в `urdf/vehicle.urdf.xacro` по размерам из
+`.course-kit/v1/models/course_ackermann/model.sdf` (единицы СИ, оси REP-103).
+
+- Xacro-свойства `wheelbase` (0.8 м), `track` (0.62 м), `wheel_radius` (0.12 м) и размеры корпуса;
+  макросы колеса, поворотного кулака, сенсора и инерции однородных тел;
+- дерево: `base_footprint` → `base_link` → `camera_link` (→ `camera_link_optical`), `lidar_link`,
+  `imu_link` (fixed, origin 0.28 0 0.38), кулаки (revolute ±0.55 рад) и колёса (continuous);
+- visual и collision заданы отдельно, тензоры инерции — физически допустимые;
+- `launch/display.launch.py`: robot_state_publisher по развёрнутому Xacro, `rviz:=true` открывает RViz
+  (Fixed Frame `base_link`), `zero_joint_states:=true` публикует нулевые `/joint_states`, чтобы колёса
+  появились в `/tf`.
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/vehicle.urdf
+check_urdf /tmp/vehicle.urdf
+ros2 launch course_description display.launch.py rviz:=true zero_joint_states:=true
+ros2 run tf2_ros tf2_echo base_link lidar_link       # Translation: [0.280, 0.000, 0.380]
+```
+
+Тесты: `colcon test --packages-select course_description` — дерево, ожидаемые родители и положения
+сенсоров, база/колея/радиус, инерция, visual/collision, `check_urdf`, сверка размеров с SDF из kit.
+Таблица систем координат и владельцев — `evidence/pr06/frames.md`.

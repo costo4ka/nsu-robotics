@@ -56,11 +56,20 @@ jobs:
           test -f config/qos-overrides.yaml
           ros2 launch course_bringup patrol.launch.py --show-args
 
-      - name: Check PR05
+      - name: Check PR06 model
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/vehicle.urdf
+          check_urdf /tmp/vehicle.urdf
+          ros2 launch course_description display.launch.py --show-args
+
+      - name: Check PR06
         shell: bash
         run: |
           # Без safe.directory git в контейнере отказывается работать,
           # и checker молча пропускает проверку report.commit.
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git rev-parse --is-inside-work-tree)" = true
-          python3 .course-kit/v1/tools/check_practice.py PR05 --submission .
+          python3 .course-kit/v1/tools/check_practice.py PR06 --submission .
