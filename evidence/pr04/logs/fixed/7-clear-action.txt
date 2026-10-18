@@ -1,0 +1,24 @@
+$ ros2 service type /clear
+std_srvs/srv/Empty
+[exit=0, 22:52:53.200]
+
+$ ros2 service call /clear std_srvs/srv/Empty
+waiting for service to become available...
+requester: making request: std_srvs.srv.Empty_Request()
+
+response:
+std_srvs.srv.Empty_Response()
+
+[exit=0, 22:52:55.459]
+
+$ ros2 action list -t
+/turtle1/rotate_absolute [turtlesim/action/RotateAbsolute]
+[exit=0, 22:52:55.815]
+
+$ ros2 action info /turtle1/rotate_absolute -t
+Action: /turtle1/rotate_absolute
+Action clients: 0
+Action servers: 1
+    /turtlesim [turtlesim/action/RotateAbsolute]
+[exit=0, 22:52:56.180]
+

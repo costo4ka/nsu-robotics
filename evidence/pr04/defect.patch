@@ -1,0 +1,11 @@
+--- a/src/patrol/patrol/parameters.py
++++ b/src/patrol/patrol/parameters.py
+@@ -27,6 +27,8 @@
+ 
+ def check_value(name, value):
+     """Вернуть причину отказа или None, если значение допустимо."""
++    if name == 'publish_hz':
++        return None  # ДЕФЕКТ ПР04: проверка частоты временно отключена
+     low, high = LIMITS[name]
+     if isinstance(value, bool) or not isinstance(value, (int, float)):
+         return f'{name} must be a number, got {value!r}'

@@ -1,0 +1,36 @@
+$ ros2 node list
+/patrol
+/turtlesim
+[exit=0, 22:51:20.106]
+
+$ ros2 topic type /turtle1/pose
+turtlesim/msg/Pose
+[exit=0, 22:51:20.467]
+
+$ ros2 param list /patrol
+  linear_speed
+  publish_hz
+  start_type_description_service
+  turn_rate
+  use_sim_time
+[exit=0, 22:51:22.976]
+
+$ ros2 param describe /patrol publish_hz --timeout 5
+Parameter name: publish_hz
+  Type: double
+  Description: command timer rate, Hz, finite, 1..30; the timer is recreated on change
+  Constraints:
+[exit=0, 22:51:25.477]
+
+$ ros2 param get /patrol linear_speed --timeout 5
+Double value is: 0.5
+[exit=0, 22:51:28.482]
+
+$ ros2 param get /patrol turn_rate --timeout 5
+Double value is: 0.3
+[exit=0, 22:51:31.520]
+
+$ ros2 param get /patrol publish_hz --timeout 5
+Double value is: 10.0
+[exit=0, 22:51:34.521]
+

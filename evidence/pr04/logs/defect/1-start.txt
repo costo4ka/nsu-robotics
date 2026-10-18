@@ -1,0 +1,13 @@
+$ ros2 node list
+/patrol
+/turtlesim
+[exit=0, 22:49:37.652]
+
+$ ros2 topic type /turtle1/pose
+turtlesim/msg/Pose
+[exit=0, 22:49:38.009]
+
+$ ros2 param get /patrol publish_hz --timeout 5
+Double value is: 10.0
+[exit=0, 22:49:40.794]
+

@@ -1,0 +1,69 @@
+$ timeout 15s ros2 param set /patrol publish_hz 0.0 --timeout 5
+[exit=124, 22:50:22.993]
+
+$ alive patrol
+patrol: процесса нет
+[exit=0, 22:50:22.997]
+
+$ terminal_output patrol
+[INFO] [1792338595.078554489] [patrol]: linear_speed=0.5 turn_rate=0.3 publish_hz=5.0 (timer period 0.200 s)
+Traceback (most recent call last):
+  File "/tmp/robotics/install/patrol/lib/patrol/patrol", line 33, in <module>
+    sys.exit(load_entry_point('patrol', 'console_scripts', 'patrol')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/robotics/build/patrol/patrol/patrol.py", line 79, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 531, in _execute
+    response = await await_or_execute(srv.callback, request, srv.srv_type.Response())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/parameter_service.py", line 117, in _set_parameters_callback
+    result = node.set_parameters_atomically([param])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 839, in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 859, in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 962, in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 1055, in _call_post_set_parameters_callback
+    callback(parameter_list)
+  File "/tmp/robotics/build/patrol/patrol/patrol.py", line 54, in apply_parameters
+    self.restart_timer(settings.period_sec)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/tmp/robotics/build/patrol/patrol/parameters.py", line 25, in period_sec
+    return 1.0 / self.publish_hz
+           ~~~~^~~~~~~~~~~~~~~~~
+ZeroDivisionError: float division by zero
+[ros2run]: Process exited with failure 1
+[exit=0, 22:50:23.000]
+
+$ ros2 node list
+/turtlesim
+[exit=0, 22:50:28.171]
+
+$ ros2 topic info /turtle1/cmd_vel
+Type: geometry_msgs/msg/Twist
+Publisher count: 0
+Subscription count: 1
+[exit=0, 22:50:28.538]
+
+$ timeout -s INT 9s ros2 topic hz /turtle1/cmd_vel
+WARNING: topic [/turtle1/cmd_vel] does not appear to be published yet
+[exit=124, 22:50:37.673]
+

@@ -1,0 +1,26 @@
+$ ros2 param set /patrol publish_hz 0.0 --timeout 5
+Setting parameter failed: publish_hz must be in [1.0, 30.0], got 0.0
+[exit=0, 22:52:07.850]
+
+$ ros2 param get /patrol publish_hz --timeout 5
+Double value is: 5.0
+[exit=0, 22:52:10.873]
+
+$ timeout -s INT 9s ros2 topic hz /turtle1/cmd_vel
+WARNING: topic [/turtle1/cmd_vel] does not appear to be published yet
+average rate: 5.633
+	min: 0.065s max: 0.200s std dev: 0.05025s window: 6
+average rate: 5.326
+	min: 0.065s max: 0.200s std dev: 0.03876s window: 11
+average rate: 5.206
+	min: 0.065s max: 0.200s std dev: 0.03173s window: 17
+average rate: 5.151
+	min: 0.065s max: 0.200s std dev: 0.02750s window: 23
+average rate: 5.119
+	min: 0.065s max: 0.200s std dev: 0.02460s window: 29
+[exit=124, 22:52:20.013]
+
+$ alive patrol
+patrol: процесс работает
+[exit=0, 22:52:20.015]
+

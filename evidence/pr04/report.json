@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR04",
+  "commit": "8f8b26b978489553c5d4701cdd56ab589e359320",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "bash evidence/pr04/scripts/kit.sh",
+    "colcon build --symlink-install --packages-select patrol",
+    "python3 -m pytest -v src/patrol/test",
+    "colcon test --packages-select patrol",
+    "colcon test-result --verbose --test-result-base build/patrol",
+    "git switch -c pr04-defect",
+    "git apply evidence/pr04/defect.patch",
+    "git add src/patrol/patrol/parameters.py",
+    "git commit -m \"PR04: temporarily disable publish_hz check\"",
+    "python3 -m pytest -v --tb=line src/patrol/test",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel",
+    "ros2 topic type /turtle1/pose",
+    "ros2 param list /patrol",
+    "ros2 param describe /patrol publish_hz",
+    "ros2 param get /patrol publish_hz",
+    "ros2 param set /patrol publish_hz 5.0",
+    "ros2 param set /patrol publish_hz 0.0",
+    "ros2 param set /patrol publish_hz -2.0",
+    "ros2 param set /patrol publish_hz .nan",
+    "ros2 param set /patrol publish_hz 31.0",
+    "ros2 param set /patrol publish_hz 5",
+    "ros2 param set /patrol linear_speed 1.0",
+    "ros2 param set /patrol turn_rate -0.5",
+    "ros2 param set /patrol linear_speed 1.5",
+    "timeout -s INT 9s ros2 topic hz /turtle1/cmd_vel",
+    "timeout 5s ros2 topic echo /turtle1/cmd_vel geometry_msgs/msg/Twist --once",
+    "ros2 topic info /turtle1/cmd_vel",
+    "ros2 service call /clear std_srvs/srv/Empty",
+    "ros2 action list -t",
+    "ros2 action info /turtle1/rotate_absolute -t",
+    "bash evidence/pr04/scripts/tests.sh defect",
+    "bash evidence/pr04/scripts/experiment.sh defect",
+    "git switch main",
+    "bash evidence/pr04/scripts/tests.sh fixed",
+    "bash evidence/pr04/scripts/experiment.sh fixed",
+    "python3 evidence/pr04/scripts/render.py",
+    "python3 .course-kit/v1/tools/check_practice.py PR04 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "patrol package build",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: defaults 0.5 m/s, 0.3 rad/s, 10 Hz; publish_hz 10 -> 5 gives period 0.2 s",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: publish_hz 0, negative, NaN, inf and out of range are rejected, previous settings kept",
+      "status": "passed"
+    },
+    {
+      "name": "pure function: range boundaries, non-numeric values, one invalid value rejects the whole change",
+      "status": "passed"
+    },
+    {
+      "name": "node: parameters declared with defaults, exactly one timer with period 0.1 s",
+      "status": "passed"
+    },
+    {
+      "name": "node: publish_hz 5.0 replaces the timer, one timer with period 0.2 s remains",
+      "status": "passed"
+    },
+    {
+      "name": "node: publish_hz 0, -5, NaN, inf, 31 rejected; parameter, settings and timer unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "node: atomic change with one invalid value changes nothing; invalid -p at startup is rejected",
+      "status": "passed"
+    },
+    {
+      "name": "node: command stream follows 10 -> 5 Hz and keeps 5 Hz after rejected 0",
+      "status": "passed"
+    },
+    {
+      "name": "node: linear_speed and turn_rate change the command, out-of-range speed rejected",
+      "status": "passed"
+    },
+    {
+      "name": "ament_flake8 and ament_pep257",
+      "status": "passed"
+    },
+    {
+      "name": "live: ros2 param set publish_hz 5.0 succeeds and ros2 topic hz shows about 5 Hz instead of 10 Hz",
+      "status": "passed"
+    },
+    {
+      "name": "live: ros2 param set publish_hz 0.0 fails with a reason, publish_hz stays 5.0, stream stays about 5 Hz",
+      "status": "passed"
+    },
+    {
+      "name": "live: -2.0, .nan, 31.0 and integer 5 rejected; speeds change the published Twist",
+      "status": "passed"
+    },
+    {
+      "name": "live: /clear service called, /turtle1/rotate_absolute found with ros2 action list -t",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "Branch pr04-defect, one commit (evidence/pr04/defect.patch): check_value returns None for publish_hz, so the frequency check is disabled. With turtlesim and patrol running, ros2 param set /patrol publish_hz 5.0 still works, but ros2 param set /patrol publish_hz 0.0 gets no reply and is cut by timeout (exit 124); the patrol process exits with code 1 and ZeroDivisionError: float division by zero in Settings.period_sec while the post-set callback recreates the timer; /turtle1/cmd_vel has Publisher count: 0 and ros2 topic hz shows no messages. The same pytest tests fail on this branch (evidence/pr04/tests.txt, logs/tests-defect.txt, logs/defect/4-set-0.txt).",
+    "root_cause": "Without the check, 0.0 is written to the parameter and the post-set callback recreates the timer with period 1.0 / publish_hz. The division raises inside the set_parameters service handler, the exception propagates into rclpy.spin, so the service reply is never sent and the node process terminates. Negative and NaN rates break timer creation the same way.",
+    "proof_after": "On main the check runs in add_on_set_parameters_callback before the value is stored: ros2 param set /patrol publish_hz 0.0 returns Setting parameter failed with the reason, ros2 param get still shows 5.0, ros2 topic hz still shows about 5 Hz and patrol keeps running; -2.0, .nan and 31.0 are rejected the same way. The tests that failed on pr04-defect pass on main, including the pure-function cases for 10 -> 5 Hz, zero, negative and NaN (evidence/pr04/parameters.md, tests.txt)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

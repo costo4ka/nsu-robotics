@@ -1,0 +1,20 @@
+# Сводка логов режима defect (для parameters.md)
+hz до изменения: average rate 10.000, min 0.099s, max 0.101s, window 64
+hz после 5.0: average rate 5.000, min 0.200s, max 0.200s, window 29
+hz после 0.0: нет сообщений
+set 5.0: Set parameter successful [exit=0]
+set 0.0: (нет вывода) [exit=124]
+код возврата patrol: 1
+
+# Проверка опыта
+OK     ros2 node list: /patrol и /turtlesim
+OK     тип /turtle1/pose
+OK     publish_hz по умолчанию 10.0
+OK     по умолчанию поток ~10 Гц
+OK     publish_hz 5.0 принят
+OK     после 5.0 поток ~5 Гц
+OK     ros2 param set publish_hz 0.0 не получил ответа (timeout, exit=124)
+OK     patrol упал с ненулевым кодом
+OK     в логе patrol ZeroDivisionError
+OK     у /turtle1/cmd_vel не осталось издателя
+OK     команды больше не идут

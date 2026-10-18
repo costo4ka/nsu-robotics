@@ -1,0 +1,8 @@
+[INFO] [1792338707.045539226] [patrol]: linear_speed=0.5 turn_rate=0.3 publish_hz=5.0 (timer period 0.200 s)
+[WARN] [1792338727.714403887] [patrol]: rejected: publish_hz must be in [1.0, 30.0], got 0.0
+[WARN] [1792338742.989591948] [patrol]: rejected: publish_hz must be in [1.0, 30.0], got -2.0
+[WARN] [1792338745.555132913] [patrol]: rejected: publish_hz must be a finite number, got nan
+[WARN] [1792338748.321395495] [patrol]: rejected: publish_hz must be in [1.0, 30.0], got 31.0
+[INFO] [1792338757.673246981] [patrol]: linear_speed=1.0 turn_rate=0.3 publish_hz=5.0 (timer period 0.200 s)
+[INFO] [1792338760.738908884] [patrol]: linear_speed=1.0 turn_rate=-0.5 publish_hz=5.0 (timer period 0.200 s)
+[WARN] [1792338766.739687076] [patrol]: rejected: linear_speed must be in [0.0, 1.0], got 1.5

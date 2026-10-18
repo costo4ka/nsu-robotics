@@ -1,0 +1,20 @@
+$ ros2 param set /patrol publish_hz -2.0 --timeout 5
+Setting parameter failed: publish_hz must be in [1.0, 30.0], got -2.0
+[exit=0, 22:52:23.175]
+
+$ ros2 param set /patrol publish_hz .nan --timeout 5
+Setting parameter failed: publish_hz must be a finite number, got nan
+[exit=0, 22:52:25.691]
+
+$ ros2 param set /patrol publish_hz 31.0 --timeout 5
+Setting parameter failed: publish_hz must be in [1.0, 30.0], got 31.0
+[exit=0, 22:52:28.522]
+
+$ ros2 param set /patrol publish_hz 5 --timeout 5
+Setting parameter failed: Wrong parameter type, expected 'Type.DOUBLE' got 'Type.INTEGER'
+[exit=0, 22:52:31.528]
+
+$ ros2 param get /patrol publish_hz --timeout 5
+Double value is: 5.0
+[exit=0, 22:52:34.799]
+

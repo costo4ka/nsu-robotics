@@ -1,0 +1,224 @@
+# ПР04: тесты. Сначала исправный код (main), затем тот же набор на ветке дефекта.
+# Источник: evidence/pr04/logs/tests-fixed.txt и tests-defect.txt (scripts/tests.sh).
+
+# mode: fixed, branch: main, HEAD: 8f8b26b978489553c5d4701cdd56ab589e359320
+
+$ colcon build --symlink-install --packages-select patrol
+Starting >>> patrol
+Finished <<< patrol [1.56s]
+
+Summary: 1 package finished [1.66s]
+[exit=0]
+
+$ python3 -m pytest -v src/patrol/test
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /tmp/robotics/src/patrol
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collecting ... collected 55 items
+
+src/patrol/test/test_command.py::test_missing_pose_gives_zero_command PASSED [  1%]
+src/patrol/test/test_command.py::test_regular_pose_gives_patrol_command PASSED [  3%]
+src/patrol/test/test_command.py::test_command_does_not_depend_on_pose_values PASSED [  5%]
+src/patrol/test/test_command.py::test_choose_command_keeps_pose_and_returns_new_message PASSED [  7%]
+src/patrol/test/test_command.py::test_limit_command[0.5-0.3-0.5-0.3] PASSED [  9%]
+src/patrol/test/test_command.py::test_limit_command[5.0-2.0-1.0-1.0] PASSED [ 10%]
+src/patrol/test/test_command.py::test_limit_command[-5.0--2.0--1.0--1.0] PASSED [ 12%]
+src/patrol/test/test_command.py::test_limit_command[nan-inf-0.0-0.0] PASSED [ 14%]
+src/patrol/test/test_command.py::test_limit_command[1-0-1.0-0.0] PASSED  [ 16%]
+src/patrol/test/test_command.py::test_limit_command_custom_limits PASSED [ 18%]
+src/patrol/test/test_command.py::test_limit_command_integer_limits PASSED [ 20%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [ 21%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 23%]
+src/patrol/test/test_parameters.py::test_defaults PASSED                 [ 25%]
+src/patrol/test/test_parameters.py::test_publish_hz_10_to_5 PASSED       [ 27%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.0] PASSED [ 29%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[-5.0] PASSED [ 30%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[nan] PASSED [ 32%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[inf] PASSED [ 34%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.5] PASSED [ 36%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[30.5] PASSED [ 38%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[linear_speed-0.0] PASSED [ 40%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[linear_speed-1.0] PASSED [ 41%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[turn_rate--1.0] PASSED [ 43%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[turn_rate-1.0] PASSED [ 45%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-1.0] PASSED [ 47%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-30.0] PASSED [ 49%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-5] PASSED [ 50%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed--0.1] PASSED [ 52%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed-1.5] PASSED [ 54%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed-nan] PASSED [ 56%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate--1.5] PASSED [ 58%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate-2.0] PASSED [ 60%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate--inf] PASSED [ 61%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-10] PASSED [ 63%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-True] PASSED [ 65%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-None] PASSED [ 67%]
+src/patrol/test/test_parameters.py::test_one_invalid_value_rejects_the_whole_change PASSED [ 69%]
+src/patrol/test/test_parameters.py::test_speeds_change_and_unknown_parameters_are_ignored PASSED [ 70%]
+src/patrol/test/test_patrol_node.py::test_graph_names_and_timer_period PASSED [ 72%]
+src/patrol/test/test_patrol_node.py::test_remap_resolves_cmd_vel_to_turtle_topic PASSED [ 74%]
+src/patrol/test/test_patrol_node.py::test_zero_command_until_first_pose_then_patrol_command PASSED [ 76%]
+src/patrol/test/test_patrol_node.py::test_parameters_have_defaults_and_one_timer PASSED [ 78%]
+src/patrol/test/test_patrol_node.py::test_publish_hz_change_replaces_timer PASSED [ 80%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[0.0] PASSED [ 81%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[-5.0] PASSED [ 83%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[nan] PASSED [ 85%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[inf] PASSED [ 87%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[31.0] PASSED [ 89%]
+src/patrol/test/test_patrol_node.py::test_atomic_change_with_one_invalid_value_changes_nothing PASSED [ 90%]
+src/patrol/test/test_patrol_node.py::test_invalid_startup_value_is_rejected PASSED [ 92%]
+src/patrol/test/test_patrol_node.py::test_valid_startup_value_sets_timer_period PASSED [ 94%]
+src/patrol/test/test_patrol_node.py::test_stream_rate_follows_publish_hz_and_survives_zero PASSED [ 96%]
+src/patrol/test/test_patrol_node.py::test_speed_parameters_change_command PASSED [ 98%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [100%]
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=421583) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 54 passed, 1 skipped, 16 warnings in 6.42s ==================
+[exit=0]
+
+$ colcon test --packages-select patrol
+Starting >>> patrol
+--- stderr: patrol
+
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=422032) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---
+Finished <<< patrol [7.00s]
+
+Summary: 1 package finished [7.12s]
+  1 package had stderr output: patrol
+[exit=0]
+
+$ colcon test-result --verbose --test-result-base build/patrol
+Summary: 55 tests, 0 errors, 0 failures, 1 skipped
+[exit=0]
+
+
+# ---------------------------------------------------------------------------
+
+# mode: defect, branch: pr04-defect, HEAD: 726530cd144e95fc45990b91d524dc20f0d5f9e3
+
+$ colcon build --symlink-install --packages-select patrol
+Starting >>> patrol
+Finished <<< patrol [1.55s]
+
+Summary: 1 package finished [1.66s]
+[exit=0]
+
+$ python3 -m pytest -v --tb=line src/patrol/test
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /tmp/robotics/src/patrol
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collecting ... collected 55 items
+
+src/patrol/test/test_command.py::test_missing_pose_gives_zero_command PASSED [  1%]
+src/patrol/test/test_command.py::test_regular_pose_gives_patrol_command PASSED [  3%]
+src/patrol/test/test_command.py::test_command_does_not_depend_on_pose_values PASSED [  5%]
+src/patrol/test/test_command.py::test_choose_command_keeps_pose_and_returns_new_message PASSED [  7%]
+src/patrol/test/test_command.py::test_limit_command[0.5-0.3-0.5-0.3] PASSED [  9%]
+src/patrol/test/test_command.py::test_limit_command[5.0-2.0-1.0-1.0] PASSED [ 10%]
+src/patrol/test/test_command.py::test_limit_command[-5.0--2.0--1.0--1.0] PASSED [ 12%]
+src/patrol/test/test_command.py::test_limit_command[nan-inf-0.0-0.0] PASSED [ 14%]
+src/patrol/test/test_command.py::test_limit_command[1-0-1.0-0.0] PASSED  [ 16%]
+src/patrol/test/test_command.py::test_limit_command_custom_limits PASSED [ 18%]
+src/patrol/test/test_command.py::test_limit_command_integer_limits PASSED [ 20%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [ 21%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 23%]
+src/patrol/test/test_parameters.py::test_defaults PASSED                 [ 25%]
+src/patrol/test/test_parameters.py::test_publish_hz_10_to_5 PASSED       [ 27%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.0] FAILED [ 29%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[-5.0] FAILED [ 30%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[nan] FAILED [ 32%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[inf] FAILED [ 34%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.5] FAILED [ 36%]
+src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[30.5] FAILED [ 38%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[linear_speed-0.0] PASSED [ 40%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[linear_speed-1.0] PASSED [ 41%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[turn_rate--1.0] PASSED [ 43%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[turn_rate-1.0] PASSED [ 45%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-1.0] PASSED [ 47%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-30.0] PASSED [ 49%]
+src/patrol/test/test_parameters.py::test_boundaries_are_accepted[publish_hz-5] PASSED [ 50%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed--0.1] PASSED [ 52%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed-1.5] PASSED [ 54%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[linear_speed-nan] PASSED [ 56%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate--1.5] PASSED [ 58%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate-2.0] PASSED [ 60%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[turn_rate--inf] PASSED [ 61%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-10] FAILED [ 63%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-True] FAILED [ 65%]
+src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-None] FAILED [ 67%]
+src/patrol/test/test_parameters.py::test_one_invalid_value_rejects_the_whole_change FAILED [ 69%]
+src/patrol/test/test_parameters.py::test_speeds_change_and_unknown_parameters_are_ignored PASSED [ 70%]
+src/patrol/test/test_patrol_node.py::test_graph_names_and_timer_period PASSED [ 72%]
+src/patrol/test/test_patrol_node.py::test_remap_resolves_cmd_vel_to_turtle_topic PASSED [ 74%]
+src/patrol/test/test_patrol_node.py::test_zero_command_until_first_pose_then_patrol_command PASSED [ 76%]
+src/patrol/test/test_patrol_node.py::test_parameters_have_defaults_and_one_timer PASSED [ 78%]
+src/patrol/test/test_patrol_node.py::test_publish_hz_change_replaces_timer PASSED [ 80%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[0.0] FAILED [ 81%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[-5.0] FAILED [ 83%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[nan] FAILED [ 85%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[inf] FAILED [ 87%]
+src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[31.0] FAILED [ 89%]
+src/patrol/test/test_patrol_node.py::test_atomic_change_with_one_invalid_value_changes_nothing PASSED [ 90%]
+src/patrol/test/test_patrol_node.py::test_invalid_startup_value_is_rejected FAILED [ 92%]
+src/patrol/test/test_patrol_node.py::test_valid_startup_value_sets_timer_period PASSED [ 94%]
+src/patrol/test/test_patrol_node.py::test_stream_rate_follows_publish_hz_and_survives_zero FAILED [ 96%]
+src/patrol/test/test_patrol_node.py::test_speed_parameters_change_command PASSED [ 98%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [100%]
+
+=================================== FAILURES ===================================
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:24: assert (None is not None)
+/tmp/robotics/src/patrol/test/test_parameters.py:44: AssertionError: assert None is not None
+/tmp/robotics/src/patrol/test/test_parameters.py:44: AssertionError: assert None is not None
+/tmp/robotics/src/patrol/test/test_parameters.py:44: AssertionError: assert None is not None
+/tmp/robotics/src/patrol/test/test_parameters.py:49: assert None is not None
+/tmp/robotics/build/patrol/patrol/parameters.py:25: ZeroDivisionError: float division by zero
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/timer.py:60: rclpy._rclpy_pybind11.RCLError: failed to create timer: timer period must be non-negative, at ./src/rcl/timer.c:157
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py:1774: ValueError: cannot convert float NaN to integer
+/tmp/robotics/src/patrol/test/test_patrol_node.py:171: AssertionError: assert not True
+/tmp/robotics/src/patrol/test/test_patrol_node.py:171: AssertionError: assert not True
+/tmp/robotics/build/patrol/patrol/parameters.py:25: ZeroDivisionError: float division by zero
+/tmp/robotics/build/patrol/patrol/parameters.py:25: ZeroDivisionError: float division by zero
+=============================== warnings summary ===============================
+test/test_flake8.py: 16 warnings
+  Warning: This process (pid=419137) is multi-threaded, use of fork() may lead to deadlocks in the child.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.0]
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[-5.0]
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[nan]
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[inf]
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[0.5]
+FAILED src/patrol/test/test_parameters.py::test_invalid_publish_hz_keeps_previous_settings[30.5]
+FAILED src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-10]
+FAILED src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-True]
+FAILED src/patrol/test/test_parameters.py::test_invalid_values_are_rejected[publish_hz-None]
+FAILED src/patrol/test/test_parameters.py::test_one_invalid_value_rejects_the_whole_change
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[0.0]
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[-5.0]
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[nan]
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[inf]
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_publish_hz_is_rejected_and_timer_kept[31.0]
+FAILED src/patrol/test/test_patrol_node.py::test_invalid_startup_value_is_rejected
+FAILED src/patrol/test/test_patrol_node.py::test_stream_rate_follows_publish_hz_and_survives_zero
+============ 17 failed, 37 passed, 1 skipped, 16 warnings in 4.63s =============
+[exit=1]
+

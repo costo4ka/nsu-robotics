@@ -1,0 +1,6 @@
+$ ros2 launch turtle_bringup sim.launch.py   # 22:51:12.216
+$ ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel   # 22:51:12.217
+SIGINT -> patrol   # 22:52:56.181
+patrol: завершился, код возврата 0   # 22:52:56.387
+SIGINT -> sim   # 22:52:56.389
+sim: завершился, код возврата 0   # 22:52:56.595

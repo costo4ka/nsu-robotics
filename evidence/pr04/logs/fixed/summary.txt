@@ -1,0 +1,31 @@
+# Сводка логов режима fixed (для parameters.md)
+hz до изменения: average rate 10.000, min 0.100s, max 0.100s, window 54
+hz после 5.0: average rate 5.000, min 0.200s, max 0.200s, window 29
+hz после 0.0: average rate 5.119, min 0.065s, max 0.200s, window 29
+set 5.0: Set parameter successful [exit=0]
+set 0.0: Setting parameter failed: publish_hz must be in [1.0, 30.0], got 0.0 [exit=0]
+код возврата patrol: 0
+
+# Проверка опыта
+OK     ros2 node list: /patrol и /turtlesim
+OK     тип /turtle1/pose
+OK     publish_hz по умолчанию 10.0
+OK     ros2 param list: три параметра
+OK     describe и значения по умолчанию 0.5 и 0.3
+OK     по умолчанию поток ~10 Гц
+OK     publish_hz 5.0 принят
+OK     после 5.0 поток ~5 Гц
+OK     publish_hz 0.0 отклонён с причиной
+OK     после отказа publish_hz = 5.0
+OK     после отказа поток ~5 Гц
+OK     patrol работает после отказа
+OK     publish_hz -2.0 отклонён
+OK     publish_hz .nan отклонён
+OK     publish_hz 31.0 отклонён
+OK     publish_hz 5 отклонён
+OK     после недопустимых значений publish_hz = 5.0
+OK     команда linear.x = 1.0, angular.z = -0.5 до и после отказа 1.5
+OK     linear_speed 1.5 отклонён
+OK     ros2 action list -t показывает /turtle1/rotate_absolute
+OK     /clear ответил
+OK     patrol завершился по Ctrl+C с кодом 0

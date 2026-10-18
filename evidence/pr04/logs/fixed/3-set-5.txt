@@ -1,0 +1,22 @@
+$ ros2 param set /patrol publish_hz 5.0 --timeout 5
+Set parameter successful
+[exit=0, 22:51:47.183]
+
+$ ros2 param get /patrol publish_hz --timeout 5
+Double value is: 5.0
+[exit=0, 22:51:49.936]
+
+$ timeout -s INT 9s ros2 topic hz /turtle1/cmd_vel
+WARNING: topic [/turtle1/cmd_vel] does not appear to be published yet
+average rate: 5.000
+	min: 0.200s max: 0.200s std dev: 0.00005s window: 7
+average rate: 5.000
+	min: 0.200s max: 0.200s std dev: 0.00005s window: 13
+average rate: 5.000
+	min: 0.200s max: 0.200s std dev: 0.00004s window: 18
+average rate: 5.000
+	min: 0.200s max: 0.200s std dev: 0.00004s window: 23
+average rate: 5.000
+	min: 0.200s max: 0.200s std dev: 0.00006s window: 29
+[exit=124, 22:51:59.083]
+
