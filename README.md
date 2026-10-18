@@ -133,3 +133,33 @@ ros2 param set /patrol publish_hz 0.0     # Setting parameter failed, остаё
 
 Тесты: `python3 -m pytest src/patrol/test`. Опыт и дефект (ветка `pr04-defect`, проверка частоты
 отключена) — `evidence/pr04/parameters.md`.
+
+## PR05 — launch, QoS и запись MCAP
+
+Пакет `course_bringup` поднимает систему одной командой: один turtlesim глобально, а `patrol`,
+`pose_relay` и `pose_listener` — в пространстве имён (по умолчанию `/robot_a`). Имена топиков
+в новых нодах относительные и связываются с глобальной черепахой через remap: выход `patrol` —
+`cmd_vel:=/turtle1/cmd_vel`, вход `pose_relay` — `pose:=/turtle1/pose` (`patrol` из ПР03 читает
+`/turtle1/pose` напрямую).
+
+- `pose_relay` читает позу черепахи и публикует `sensor_pose` с best effort (keep last 10, volatile);
+- `pose_listener` подписан на `sensor_pose` с reliability из параметра (`reliable` или `best_effort`),
+  пишет в лог число полученных сообщений и предупреждение о несовместимом QoS;
+- аргументы launch: `namespace`, `record` (запуск `ros2 bag record -s mcap` через `IfCondition`),
+  `bag_dir`, `subscriber_reliability`.
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=16
+# сбой: reliable-подписчик против best effort-сенсора — топик виден, сообщений нет
+ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false
+# исправление и запись одного потока /robot_a/sensor_pose в MCAP
+ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort \
+  record:=true bag_dir:=evidence/pr05/bag
+# повтор записи с тем же профилем
+ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml
+```
+
+Тесты: `colcon test --packages-select course_bringup`. Опыт — `evidence/pr05/` (`qos-before.txt`,
+`qos-after.txt`, `bag-metadata.yaml`, запись `bag/`).

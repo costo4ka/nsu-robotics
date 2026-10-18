@@ -46,11 +46,21 @@ jobs:
           python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
           test -f "$(ros2 pkg prefix turtle_bringup)/share/turtle_bringup/launch/sim.launch.py"
 
-      - name: Check PR04
+      - name: Check PR05 launch install
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          share="$(ros2 pkg prefix course_bringup)/share/course_bringup"
+          test -f "$share/launch/patrol.launch.py"
+          test -f config/qos-overrides.yaml
+          ros2 launch course_bringup patrol.launch.py --show-args
+
+      - name: Check PR05
         shell: bash
         run: |
           # Без safe.directory git в контейнере отказывается работать,
           # и checker молча пропускает проверку report.commit.
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git rev-parse --is-inside-work-tree)" = true
-          python3 .course-kit/v1/tools/check_practice.py PR04 --submission .
+          python3 .course-kit/v1/tools/check_practice.py PR05 --submission .

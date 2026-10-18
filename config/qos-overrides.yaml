@@ -1,0 +1,4 @@
+/robot_a/sensor_pose:
+  reliability: best_effort
+  history: keep_last
+  depth: 10

@@ -1,5 +1,7 @@
 """Нода patrol: подписка на позу черепахи и таймер команды скорости с параметрами."""
 
+import signal
+
 from geometry_msgs.msg import Twist
 from patrol.command import choose_command
 from patrol.parameters import apply_changes, LIMITS, Settings
@@ -80,6 +82,9 @@ def main(args=None):
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
+        # Ctrl+C в терминале получают и launch, и нода, затем launch шлёт SIGINT ещё раз;
+        # повторный сигнал во время уборки не должен превращать выход в traceback.
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
         node.destroy_node()
         rclpy.try_shutdown()
 
