@@ -99,3 +99,37 @@ ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
 ```
 
 Без remap относительное имя `cmd_vel` разрешается в `/cmd_vel`: у него есть издатель `/patrol`, но нет подписчика turtlesim, и черепаха стоит.
+
+## PR04 — параметры patrol
+
+Нода `/patrol` читает три параметра и меняет их на лету через `ros2 param set`:
+
+| Параметр | По умолчанию | Допустимо | Что меняет |
+|---|---|---|---|
+| `linear_speed` | 0.5 м/с | конечное число, 0…1 | `linear.x` команды |
+| `turn_rate` | 0.3 рад/с | конечное число, −1…1 | `angular.z` команды |
+| `publish_hz` | 10.0 Гц | конечное число, 1…30 | период таймера `1/publish_hz` |
+
+- Проверка значений — чистая функция `patrol.parameters.apply_changes` в колбэке
+  `add_on_set_parameters_callback`: недопустимое значение отклоняется до записи параметра,
+  таймер и активные настройки не меняются. Колбэк регистрируется до объявления параметров,
+  поэтому недопустимое `-p` при запуске тоже отклоняется.
+- Применение — в `add_post_set_parameters_callback`: при смене `publish_hz` создаётся новый
+  таймер с периодом `1/publish_hz`, прежний останавливается и удаляется — у ноды один таймер.
+- Тип параметров — `double`: целое (`ros2 param set /patrol publish_hz 5`, `-p publish_hz:=5`)
+  rclpy отклоняет, нужно писать `5.0`.
+
+Запуск (turtlesim уже запущен через `ros2 launch turtle_bringup sim.launch.py`):
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=16
+ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
+# в другом терминале
+ros2 param set /patrol publish_hz 5.0     # Set parameter successful, поток ~5 Гц
+ros2 param set /patrol publish_hz 0.0     # Setting parameter failed, остаётся 5 Гц
+```
+
+Тесты: `python3 -m pytest src/patrol/test`. Опыт и дефект (ветка `pr04-defect`, проверка частоты
+отключена) — `evidence/pr04/parameters.md`.

@@ -10,8 +10,8 @@ jobs:
       image: osrf/ros:jazzy-desktop-full@sha256:d16957210572c5f919f3f9bd2fb0cc24a82542647489d8b8eda7c3beda31305f
 
     env:
-      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz
-      COURSE_KIT_SHA256: 7fbfd3e8161ab6c6ebefc7663efdaf77d9a7d490399743507f33dcefbd5ac522
+      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w06-6eda53e1c566.tar.gz
+      COURSE_KIT_SHA256: 6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe
 
     steps:
       - uses: actions/checkout@v4
@@ -46,11 +46,11 @@ jobs:
           python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
           test -f "$(ros2 pkg prefix turtle_bringup)/share/turtle_bringup/launch/sim.launch.py"
 
-      - name: Check PR03
+      - name: Check PR04
         shell: bash
         run: |
           # Без safe.directory git в контейнере отказывается работать,
           # и checker молча пропускает проверку report.commit.
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git rev-parse --is-inside-work-tree)" = true
-          python3 .course-kit/v1/tools/check_practice.py PR03 --submission .
+          python3 .course-kit/v1/tools/check_practice.py PR04 --submission .

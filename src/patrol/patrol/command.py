@@ -11,11 +11,11 @@ MAX_LINEAR_X = 1.0
 MAX_ANGULAR_Z = 1.0
 
 
-def choose_command(pose):
+def choose_command(pose, linear_speed=PATROL_LINEAR_X, turn_rate=PATROL_ANGULAR_Z):
     """Вернуть нулевой Twist, пока позы нет, иначе команду патрулирования."""
     if pose is None:
         return Twist()
-    return limit_command(PATROL_LINEAR_X, PATROL_ANGULAR_Z)
+    return limit_command(linear_speed, turn_rate)
 
 
 def limit_command(linear_x, angular_z,
