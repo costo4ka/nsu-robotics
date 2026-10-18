@@ -1,0 +1,6 @@
+$ ros2 launch course_description display.launch.py rviz:=false   # 23:04:14.138
+$ ros2 run course_description zero_joint_states   # 23:04:48.755
+SIGINT -> joints   # 23:05:00.708
+joints: завершился, код возврата 0   # 23:05:00.915
+SIGINT -> rsp   # 23:05:00.917
+rsp: завершился, код возврата 0   # 23:05:01.123

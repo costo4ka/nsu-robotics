@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR06",
+  "commit": "c5af45a89b9ffebdbd7830ecc4dc9600d573afa4",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "bash evidence/pr06/scripts/kit.sh",
+    "colcon build --symlink-install --packages-select course_description",
+    "xacro src/course_description/urdf/vehicle.urdf.xacro -o /tmp/vehicle.urdf",
+    "check_urdf /tmp/vehicle.urdf",
+    "python3 -m pytest -v src/course_description/test",
+    "colcon test --packages-select course_description",
+    "colcon test-result --verbose --test-result-base build/course_description",
+    "ros2 launch course_description display.launch.py rviz:=true zero_joint_states:=true",
+    "ros2 launch course_description display.launch.py rviz:=false",
+    "ros2 topic info /tf_static --verbose",
+    "timeout 4 ros2 topic echo /tf_static tf2_msgs/msg/TFMessage --once --qos-durability transient_local --qos-reliability reliable",
+    "timeout 4 ros2 topic echo /tf_static tf2_msgs/msg/TFMessage --once --qos-durability volatile --qos-reliability reliable",
+    "ros2 run tf2_ros tf2_echo base_link lidar_link",
+    "ros2 run tf2_ros tf2_echo camera_link camera_link_optical",
+    "ros2 run tf2_tools view_frames -o frames",
+    "ros2 topic echo /tf_static --once",
+    "ros2 run course_description zero_joint_states",
+    "ros2 topic info /joint_states --verbose",
+    "ros2 topic info /tf --verbose",
+    "ros2 run tf2_ros tf2_echo base_link front_left_wheel",
+    "git switch -c pr06-defect",
+    "git apply evidence/pr06/defect.patch",
+    "git add src/course_description/urdf/vehicle.urdf.xacro",
+    "git commit -m \"PR06: lidar_link attached to camera_link\"",
+    "bash evidence/pr06/scripts/tests.sh defect",
+    "python3 -m pytest -v --tb=line src/course_description/test",
+    "bash evidence/pr06/scripts/experiment.sh defect",
+    "git switch main",
+    "bash evidence/pr06/scripts/tests.sh fixed",
+    "bash evidence/pr06/scripts/experiment.sh fixed",
+    "python3 evidence/pr06/scripts/render.py",
+    "python3 .course-kit/v1/tools/check_practice.py PR06 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "colcon build of course_description; xacro expands vehicle.urdf.xacro; check_urdf parses the tree with root base_footprint",
+      "status": "passed"
+    },
+    {
+      "name": "tree: one root, no cycles, no unknown links; expected parent and joint type of every link (sensors fixed on base_link)",
+      "status": "passed"
+    },
+    {
+      "name": "geometry: camera, lidar and IMU at (0.28, 0, 0.38) in base_link by composing origins along the chain; camera_link_optical axes follow REP-103",
+      "status": "passed"
+    },
+    {
+      "name": "chassis: wheelbase 0.8 m, track 0.62 m, wheel radius 0.12 m; wheels continuous about y, steering revolute about z within ±0.55 rad",
+      "status": "passed"
+    },
+    {
+      "name": "SI units; inertia of body, wheels and sensors equals the homogeneous box/cylinder formula for their own geometry and is physically valid; separate visual and collision geometry",
+      "status": "passed"
+    },
+    {
+      "name": "dimensions match the kit SDF course_ackermann: sensor and wheel positions, wheel_base, wheel_separation, wheel_radius, body size, masses",
+      "status": "passed"
+    },
+    {
+      "name": "ament_flake8 and ament_pep257 of course_description",
+      "status": "passed"
+    },
+    {
+      "name": "live: /tf_static of robot_state_publisher is RELIABLE + TRANSIENT_LOCAL; a late transient local subscriber gets the transforms (exit 0), a volatile one gets nothing (exit 124)",
+      "status": "passed"
+    },
+    {
+      "name": "live: tf2_echo base_link lidar_link gives [0.280, 0.000, 0.380]; view_frames shows base_link -> lidar_link; /tf_static has one publisher",
+      "status": "passed"
+    },
+    {
+      "name": "live: with /joint_states from zero_joint_states, /tf has one publisher robot_state_publisher (VOLATILE) and front_left_wheel is at [0.400, 0.310, 0.000]",
+      "status": "passed"
+    },
+    {
+      "name": "model opens in RViz with Fixed Frame base_link, Global Status: Ok, wheels shown with zero_joint_states (screenshot evidence/pr06/rviz.png)",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "Branch pr06-defect, one commit (evidence/pr06/defect.patch): the lidar sensor macro gets parent=\"camera_link\" instead of base_link with the same origin 0.28 0 0.38. check_urdf still parses the tree (lidar_link under camera_link), but ros2 run tf2_ros tf2_echo base_link lidar_link gives Translation [0.560, 0.000, 0.760], view_frames shows camera_link -> lidar_link, and test_expected_parent_and_joint_type[lidar_link], test_sensor_position_in_base_link[lidar_link] and test_dimensions_match_kit_sdf fail (evidence/pr06/frames.md, logs/model-check-defect.txt, logs/defect/).",
+    "root_cause": "A URDF joint origin is expressed in the parent frame. With camera_link as the parent, the lidar offset is added to the camera offset, so the lidar ends up at 0.28 + 0.28 and 0.38 + 0.38 from base_link. The tree stays connected and acyclic, so a structural check cannot see the error; only a geometric test of the expected parent and position can.",
+    "proof_after": "On main the lidar macro uses the default parent base_link: tf2_echo base_link lidar_link gives [0.280, 0.000, 0.380], view_frames shows base_link -> lidar_link, check_urdf passes, and the same tests that failed on pr06-defect pass together with the rest of course_description (evidence/pr06/model-check.txt, frames.md)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

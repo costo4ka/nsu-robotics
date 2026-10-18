@@ -1,0 +1,93 @@
+# mode: fixed, branch: main, HEAD: c5af45a89b9ffebdbd7830ecc4dc9600d573afa4
+
+$ colcon build --symlink-install --packages-select course_description
+Starting >>> course_description
+Finished <<< course_description [1.55s]
+
+Summary: 1 package finished [1.66s]
+[exit=0]
+
+$ xacro src/course_description/urdf/vehicle.urdf.xacro -o /tmp/vehicle.urdf
+[exit=0]
+
+$ check_urdf /tmp/vehicle.urdf
+robot name is: course_ackermann
+---------- Successfully Parsed XML ---------------
+root Link: base_footprint has 1 child(ren)
+    child(1):  base_link
+        child(1):  camera_link
+            child(1):  camera_link_optical
+        child(2):  imu_link
+        child(3):  lidar_link
+        child(4):  front_left_knuckle
+            child(1):  front_left_wheel
+        child(5):  front_right_knuckle
+            child(1):  front_right_wheel
+        child(6):  rear_left_wheel
+        child(7):  rear_right_wheel
+[exit=0]
+
+$ python3 -m pytest -v src/course_description/test
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /tmp/robotics/src/course_description
+plugins: ament-lint-0.17.5, launch-testing-3.4.11, ament-flake8-0.17.5, ament-xmllint-0.17.5, launch-testing-ros-0.26.12, ament-pep257-0.17.5, ament-copyright-0.17.5, colcon-core-0.21.3, cov-4.1.0
+collecting ... collected 41 items
+
+src/course_description/test/test_copyright.py::test_copyright SKIPPED    [  2%]
+src/course_description/test/test_flake8.py::test_flake8 PASSED           [  4%]
+src/course_description/test/test_model.py::test_tree_is_connected_and_acyclic_with_root_base_footprint PASSED [  7%]
+src/course_description/test/test_model.py::test_base_link_stands_on_the_ground_through_base_footprint PASSED [  9%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[base_link] PASSED [ 12%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[camera_link] PASSED [ 14%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[camera_link_optical] PASSED [ 17%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[front_left_knuckle] PASSED [ 19%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[front_left_wheel] PASSED [ 21%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[front_right_knuckle] PASSED [ 24%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[front_right_wheel] PASSED [ 26%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[imu_link] PASSED [ 29%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[lidar_link] PASSED [ 31%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[rear_left_wheel] PASSED [ 34%]
+src/course_description/test/test_model.py::test_expected_parent_and_joint_type[rear_right_wheel] PASSED [ 36%]
+src/course_description/test/test_model.py::test_sensor_position_in_base_link[camera_link] PASSED [ 39%]
+src/course_description/test/test_model.py::test_sensor_position_in_base_link[lidar_link] PASSED [ 41%]
+src/course_description/test/test_model.py::test_sensor_position_in_base_link[imu_link] PASSED [ 43%]
+src/course_description/test/test_model.py::test_camera_optical_axes_follow_rep_103 PASSED [ 46%]
+src/course_description/test/test_model.py::test_wheelbase_track_and_radius PASSED [ 48%]
+src/course_description/test/test_model.py::test_wheel_joints_spin_about_y_and_steering_is_limited PASSED [ 51%]
+src/course_description/test/test_model.py::test_si_units_and_physical_inertia PASSED [ 53%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[base_link] PASSED [ 56%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[camera_link] PASSED [ 58%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[lidar_link] PASSED [ 60%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[imu_link] PASSED [ 63%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[front_left_wheel] PASSED [ 65%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[front_right_wheel] PASSED [ 68%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[rear_left_wheel] PASSED [ 70%]
+src/course_description/test/test_model.py::test_inertia_matches_own_geometry[rear_right_wheel] PASSED [ 73%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[base_link] PASSED [ 75%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[camera_link] PASSED [ 78%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[lidar_link] PASSED [ 80%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[imu_link] PASSED [ 82%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[front_left_wheel] PASSED [ 85%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[front_right_wheel] PASSED [ 87%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[rear_left_wheel] PASSED [ 90%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate[rear_right_wheel] PASSED [ 92%]
+src/course_description/test/test_model.py::test_check_urdf_accepts_expanded_model PASSED [ 95%]
+src/course_description/test/test_model.py::test_dimensions_match_kit_sdf PASSED [ 97%]
+src/course_description/test/test_pep257.py::test_pep257 PASSED           [100%]
+
+======================== 40 passed, 1 skipped in 0.28s =========================
+[exit=0]
+
+$ colcon test --packages-select course_description
+Starting >>> course_description
+Finished <<< course_description [0.74s]
+
+Summary: 1 package finished [0.86s]
+[exit=0]
+
+$ colcon test-result --verbose --test-result-base build/course_description
+Summary: 41 tests, 0 errors, 0 failures, 1 skipped
+[exit=0]
+

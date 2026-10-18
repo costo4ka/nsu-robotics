@@ -1,0 +1,11 @@
+# Сводка опыта ПР06, режим defect
+tf2_echo base_link lidar_link: (0.56, 0.0, 0.76)
+родитель lidar_link в /tf_static: camera_link
+
+# Проверка опыта
+OK     у /tf_static ровно один издатель
+OK     дефект: tf2_echo base_link lidar_link: [0.560, 0.000, 0.760]
+OK     дефект: в /tf_static родитель lidar_link — camera_link
+OK     дефект: view_frames: camera_link -> lidar_link
+OK     launch завершился по Ctrl+C с кодом 0
+OK     по Ctrl+C ни один процесс launch не упал

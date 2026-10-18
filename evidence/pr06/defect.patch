@@ -1,0 +1,11 @@
+--- a/src/course_description/urdf/vehicle.urdf.xacro
++++ b/src/course_description/urdf/vehicle.urdf.xacro
+@@ -160,7 +160,7 @@
+       <origin xyz="0 0 0"/>
+     </xacro:box_inertial>
+   </xacro:sensor>
+-  <xacro:sensor name="lidar_link" joint="base_to_lidar">
++  <xacro:sensor name="lidar_link" joint="base_to_lidar" parent="camera_link">  <!-- ДЕФЕКТ ПР06: parent лидара -->
+     <geometry><cylinder radius="${lidar_radius}" length="${lidar_length}"/></geometry>
+     <xacro:cylinder_inertial mass="${sensor_mass}" radius="${lidar_radius}" length="${lidar_length}">
+       <origin xyz="0 0 0"/>

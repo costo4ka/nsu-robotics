@@ -1,0 +1,140 @@
+## topic info /tf_static
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: PUBLISHER
+GID: 01.0f.1d.9c.69.c2.43.c1.00.00.00.00.00.00.15.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): UNKNOWN
+  Durability: TRANSIENT_LOCAL
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+## echo transient_local
+transforms:
+- header:
+    stamp:
+      sec: 1792339454
+      nanosec: 595191705
+    frame_id: base_footprint
+  child_frame_id: base_link
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.12
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792339454
+      nanosec: 595191705
+    frame_id: base_link
+  child_frame_id: camera_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792339454
+      nanosec: 595191705
+    frame_id: base_link
+  child_frame_id: imu_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792339454
+      nanosec: 595191705
+    frame_id: base_link
+  child_frame_id: lidar_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792339454
+      nanosec: 595191705
+    frame_id: camera_link
+  child_frame_id: camera_link_optical
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rotation:
+      x: 0.5
+      y: -0.4999999999999999
+      z: 0.5
+      w: -0.5000000000000001
+---
+exit=0
+## echo volatile
+exit=124
+
+## topic info /tf (zero_joint_states публикует /joint_states, robot_state_publisher — /tf)
+$ ros2 topic info /tf --verbose
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: PUBLISHER
+GID: 01.0f.1d.9c.69.c2.43.c1.00.00.00.00.00.00.14.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+[exit=0, 23:04:54.575, попытка 1]
+
+## Вывод
+
+У robot_state_publisher /tf_static — RELIABLE и TRANSIENT_LOCAL: фиксированные звенья (камера, лидар,
+IMU) не меняются, поэтому их преобразования публикуются один раз при запуске, а издатель хранит
+последнее сообщение для подписчиков, которые подключатся позже. /tf — RELIABLE и VOLATILE: подвижные
+звенья и одометрия публикуются непрерывно с отметками времени, прошлое значение сразу устаревает,
+и поздний подписчик просто дождётся следующего сообщения. Поэтому подписка с volatile на /tf_static
+ничего не получает (exit=124): новых сообщений нет, а сохранённое отдаётся только transient local.

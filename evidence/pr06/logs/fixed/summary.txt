@@ -1,0 +1,17 @@
+# Сводка опыта ПР06, режим fixed
+tf2_echo base_link lidar_link: (0.28, 0.0, 0.38)
+родитель lidar_link в /tf_static: base_link
+
+# Проверка опыта
+OK     у /tf_static ровно один издатель
+OK     /tf_static: RELIABLE + TRANSIENT_LOCAL у robot_state_publisher
+OK     поздний transient local подписчик получил преобразования (exit=0)
+OK     поздний volatile подписчик ничего не получил (exit=124)
+OK     tf2_echo base_link lidar_link: [0.280, 0.000, 0.380]
+OK     /tf_static: родитель lidar_link — base_link
+OK     view_frames: base_link -> lidar_link
+OK     /tf: один издатель robot_state_publisher, VOLATILE
+OK     /joint_states: один издатель zero_joint_states
+OK     tf2_echo base_link front_left_wheel: [0.400, 0.310, 0.000]
+OK     launch завершился по Ctrl+C с кодом 0
+OK     по Ctrl+C ни один процесс launch не упал
